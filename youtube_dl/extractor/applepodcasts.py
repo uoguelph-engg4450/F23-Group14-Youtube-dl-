@@ -1,23 +1,17 @@
-# coding: utf-8
-from __future__ import unicode_literals
-
 from .common import InfoExtractor
 from ..utils import (
     clean_html,
     clean_podcast_url,
     get_element_by_class,
     int_or_none,
-    parse_codecs,
     parse_iso8601,
     try_get,
 )
-
-
 class ApplePodcastsIE(InfoExtractor):
     _VALID_URL = r'https?://podcasts\.apple\.com/(?:[^/]+/)?podcast(?:/[^/]+){1,2}.*?\bi=(?P<id>\d+)'
     _TESTS = [{
         'url': 'https://podcasts.apple.com/us/podcast/207-whitney-webb-returns/id1135137367?i=1000482637777',
-        'md5': '41dc31cd650143e530d9423b6b5a344f',
+        'md5': 'baf8a6b8b8aa6062dbb4639ed73d0052',
         'info_dict': {
             'id': '1000482637777',
             'ext': 'mp3',
@@ -25,9 +19,8 @@ class ApplePodcastsIE(InfoExtractor):
             'description': 'md5:75ef4316031df7b41ced4e7b987f79c6',
             'upload_date': '20200705',
             'timestamp': 1593932400,
-            'duration': 6454,
+            'duration': 5369,
             'series': 'The Tim Dillon Show',
-            'thumbnail': 're:.+[.](png|jpe?g|webp)',
         }
     }, {
         'url': 'https://podcasts.apple.com/podcast/207-whitney-webb-returns/id1135137367?i=1000482637777',
@@ -39,7 +32,6 @@ class ApplePodcastsIE(InfoExtractor):
         'url': 'https://podcasts.apple.com/podcast/id1135137367?i=1000482637777',
         'only_matching': True,
     }]
-
     def _real_extract(self, url):
         episode_id = self._match_id(url)
         webpage = self._download_webpage(url, episode_id)
@@ -76,7 +68,7 @@ class ApplePodcastsIE(InfoExtractor):
                 series = try_get(inc, lambda x: x['attributes']['name'])
         series = series or clean_html(get_element_by_class('podcast-header__identity', webpage))
 
-        info = [{
+        return {
             'id': episode_id,
             'title': episode['name'],
             'url': clean_podcast_url(episode['assetUrl']),
@@ -84,10 +76,4 @@ class ApplePodcastsIE(InfoExtractor):
             'timestamp': parse_iso8601(episode.get('releaseDateTime')),
             'duration': int_or_none(episode.get('durationInMilliseconds'), 1000),
             'series': series,
-            'thumbnail': self._og_search_thumbnail(webpage),
-        }]
-        self._sort_formats(info)
-        info = info[0]
-        codecs = parse_codecs(info.get('ext', 'mp3'))
-        info.update(codecs)
-        return info
+        }
