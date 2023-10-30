@@ -6,22 +6,22 @@ from .mtv import MTVServicesInfoExtractor
 
 class SouthParkIE(MTVServicesInfoExtractor):
     IE_NAME = 'southpark.cc.com'
-    _VALID_URL = r'https?://(?:www\.)?(?P<url>southpark(?:\.cc|studios)\.com/(?:clips|(?:full-)?episodes|collections)/(?P<id>.+?)(\?|#|$))'
+    _VALID_URL = r'https?://(?:www\.)?(?P<url>southpark(?:\.cc|studios)\.(?:com|nu)/(?:clips|(?:full-)?episodes|collections)/(?P<id>.+?)(\?|#|$))'
 
     _FEED_URL = 'http://feeds.mtvnservices.com/od/feed/intl-mrss-player-feed'
 
     _TESTS = [{
-        'url': 'http://southpark.cc.com/clips/104437/bat-daded#tab=featured',
+        'url': 'https://www.southparkstudios.nu/video-clips/m4czx9/south-park-bat-daded',
         'info_dict': {
-            'id': 'a7bff6c2-ed00-11e0-aca6-0026b9414f30',
-            'ext': 'mp4',
-            'title': 'South Park|Bat Daded',
+            'id': 'south-park-bat-daded',
+            'ext': 'unknown_video',
+            'title': 'Bat Daded',
             'description': 'Randy disqualifies South Park by getting into a fight with Bat Dad.',
-            'timestamp': 1112760000,
-            'upload_date': '20050406',
+            'timestamp': 1112839320,
+            'upload_date': '20050407',
         },
     }, {
-        'url': 'http://southpark.cc.com/collections/7758/fan-favorites/1',
+        'url': 'http://southpark.cc.nu/collections/7758/fan-favorites/1',
         'only_matching': True,
     }, {
         'url': 'https://www.southparkstudios.com/episodes/h4o269/south-park-stunning-and-brave-season-19-ep-1',
@@ -108,7 +108,7 @@ class SouthParkNlIE(SouthParkIE):
 
 class SouthParkDkIE(SouthParkIE):
     IE_NAME = 'southparkstudios.dk'
-    _VALID_URL = r'https?://(?:www\.)?(?P<url>southparkstudios\.(?:dk|nu)/(?:clips|full-episodes|collections)/(?P<id>.+?)(\?|#|$))'
+    _VALID_URL = r'https?://(?:www\.)?(?P<url>southparkstudios\.dk/(?:clips|full-episodes|collections)/(?P<id>.+?)(\?|#|$))'
     _FEED_URL = 'http://www.southparkstudios.dk/feeds/video-player/mrss/'
 
     _TESTS = [{
